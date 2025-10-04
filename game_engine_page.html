@@ -1,0 +1,538 @@
+<!-- game-engine.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Engine - ShiroNEX</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a0015 0%, #1a0033 50%, #2d0052 100%);
+            z-index: -2;
+        }
+
+        .light-beam {
+            position: fixed;
+            top: -50%;
+            right: -10%;
+            width: 40%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(138, 43, 226, 0.3), rgba(186, 85, 211, 0.5), transparent);
+            transform: rotate(25deg);
+            animation: shimmer 8s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.4; transform: rotate(25deg) translateX(0); }
+            50% { opacity: 0.7; transform: rotate(25deg) translateX(50px); }
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            font-style: italic;
+            letter-spacing: 2px;
+            cursor: pointer;
+        }
+
+        .back-btn {
+            padding: 10px 25px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(138, 43, 226, 0.6);
+            transform: translateX(-5px);
+        }
+
+        main {
+            min-height: calc(100vh - 80px);
+            padding: 40px 20px 100px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-title {
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
+        }
+
+        .page-subtitle {
+            font-size: 1.2em;
+            color: #aaa;
+        }
+
+        .engine-showcase {
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.2), rgba(10, 40, 70, 0.4));
+            border-radius: 30px;
+            padding: 50px;
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 50px;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .showcase-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s;
+        }
+
+        .showcase-item:hover {
+            transform: translateY(-10px);
+            border-color: rgba(138, 43, 226, 0.5);
+            box-shadow: 0 15px 40px rgba(138, 43, 226, 0.3);
+        }
+
+        .showcase-icon {
+            font-size: 4em;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .showcase-title {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #ba55d3;
+            text-align: center;
+        }
+
+        .showcase-desc {
+            color: #ccc;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .engines-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .engine-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 35px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s;
+            cursor: pointer;
+        }
+
+        .engine-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(138, 43, 226, 0.5);
+            box-shadow: 0 15px 40px rgba(138, 43, 226, 0.3);
+        }
+
+        .engine-logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #8a2be2, #ba55d3);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            margin: 0 auto 20px;
+            font-weight: bold;
+        }
+
+        .engine-name {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            color: #ba55d3;
+            text-align: center;
+        }
+
+        .engine-desc {
+            color: #ccc;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .engine-features {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .engine-features li {
+            padding: 8px 0;
+            color: #aaa;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .engine-features li:before {
+            content: "▸ ";
+            color: #ba55d3;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .engine-features li:last-child {
+            border-bottom: none;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.3), rgba(45, 0, 82, 0.5));
+            border-radius: 25px;
+            padding: 50px;
+            text-align: center;
+            margin-top: 60px;
+            border: 2px solid rgba(138, 43, 226, 0.3);
+        }
+
+        .cta-title {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .cta-text {
+            font-size: 1.2em;
+            color: #ccc;
+            margin-bottom: 30px;
+        }
+
+        .cta-button {
+            padding: 18px 50px;
+            background: linear-gradient(135deg, #8a2be2, #ba55d3);
+            border: none;
+            border-radius: 30px;
+            color: #fff;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 40px rgba(138, 43, 226, 0.5);
+        }
+
+        .section-title {
+            font-size: 2em;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #ba55d3;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 20, 40, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-nav {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .footer-icon {
+            cursor: pointer;
+            transition: transform 0.3s;
+            filter: brightness(0.9);
+            text-decoration: none;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-icon:hover {
+            transform: translateY(-3px);
+            filter: brightness(1.2);
+        }
+
+        .os-icon {
+            width: 35px;
+            height: 35px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #003366;
+        }
+
+        .user-menu {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .menu-btn {
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .menu-btn span {
+            width: 30px;
+            height: 3px;
+            background: #fff;
+            border-radius: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2em;
+            }
+
+            .engine-showcase {
+                padding: 30px;
+            }
+
+            .engines-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="light-beam"></div>
+
+    <main>
+        <a href="index.html" class="back-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to Home
+        </a>
+
+        <div class="page-header">
+            <h1 class="page-title">Game Engine</h1>
+            <p class="page-subtitle">Create immersive gaming experiences with powerful engines</p>
+        </div>
+
+        <div class="engine-showcase">
+            <h2 style="text-align: center; margin-bottom: 40px; font-size: 2em;">Why Choose Our Game Engines?</h2>
+            <div class="showcase-grid">
+                <div class="showcase-item">
+                    <div class="showcase-icon">🎮</div>
+                    <h3 class="showcase-title">Cross-Platform</h3>
+                    <p class="showcase-desc">Build once, deploy everywhere. Support for PC, console, mobile, and web platforms.</p>
+                </div>
+
+                <div class="showcase-item">
+                    <div class="showcase-icon">⚡</div>
+                    <h3 class="showcase-title">High Performance</h3>
+                    <p class="showcase-desc">Optimized rendering and physics engines for smooth 60+ FPS gameplay.</p>
+                </div>
+
+                <div class="showcase-item">
+                    <div class="showcase-icon">🎨</div>
+                    <h3 class="showcase-title">Visual Scripting</h3>
+                    <p class="showcase-desc">No coding required with intuitive node-based visual scripting systems.</p>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Popular Game Engines</h2>
+
+        <div class="engines-list">
+            <div class="engine-card">
+                <div class="engine-logo">U5</div>
+                <h3 class="engine-name">Unreal Engine 5</h3>
+                <p class="engine-desc">Industry-leading game engine with photorealistic graphics and advanced tools for AAA game development.</p>
+                <ul class="engine-features">
+                    <li>Nanite virtualized geometry</li>
+                    <li>Lumen global illumination</li>
+                    <li>MetaHuman creator</li>
+                    <li>Blueprint visual scripting</li>
+                </ul>
+            </div>
+
+            <div class="engine-card">
+                <div class="engine-logo">U</div>
+                <h3 class="engine-name">Unity Engine</h3>
+                <p class="engine-desc">Versatile and user-friendly engine perfect for 2D, 3D, VR, and AR game development.</p>
+                <ul class="engine-features">
+                    <li>C# scripting language</li>
+                    <li>Asset Store marketplace</li>
+                    <li>Universal Render Pipeline</li>
+                    <li>ML-Agents for AI</li>
+                </ul>
+            </div>
+
+            <div class="engine-card">
+                <div class="engine-logo">G</div>
+                <h3 class="engine-name">Godot Engine</h3>
+                <p class="engine-desc">Free and open-source engine with a unique scene system and GDScript language.</p>
+                <ul class="engine-features">
+                    <li>Completely free and open</li>
+                    <li>Lightweight and fast</li>
+                    <li>Built-in 2D engine</li>
+                    <li>Visual shader editor</li>
+                </ul>
+            </div>
+
+            <div class="engine-card">
+                <div class="engine-logo">CE</div>
+                <h3 class="engine-name">CryEngine</h3>
+                <p class="engine-desc">Powerful engine known for stunning visuals and advanced environmental rendering.</p>
+                <ul class="engine-features">
+                    <li>Advanced vegetation</li>
+                    <li>Volumetric fog system</li>
+                    <li>Real-time ray tracing</li>
+                    <li>CRYENGINE Sandbox</li>
+                </ul>
+            </div>
+
+            <div class="engine-card">
+                <div class="engine-logo">GM</div>
+                <h3 class="engine-name">GameMaker</h3>
+                <p class="engine-desc">Beginner-friendly engine ideal for 2D game development with drag-and-drop features.</p>
+                <ul class="engine-features">
+                    <li>Drag and drop interface</li>
+                    <li>GML scripting language</li>
+                    <li>Multi-platform export</li>
+                    <li>Built-in sprite editor</li>
+                </ul>
+            </div>
+
+            <div class="engine-card">
+                <div class="engine-logo">C++</div>
+                <h3 class="engine-name">Custom Engine</h3>
+                <p class="engine-desc">Build your own engine from scratch with C++ for complete control and optimization.</p>
+                <ul class="engine-features">
+                    <li>Full source code control</li>
+                    <li>Maximum performance</li>
+                    <li>Custom architecture</li>
+                    <li>Learning experience</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2 class="cta-title">Ready to Start Creating?</h2>
+            <p class="cta-text">Download your preferred game engine and bring your ideas to life today!</p>
+            <button class="cta-button">Get Started Now</button>
+        </div>
+    </main>
+
+    <footer>
+        <div class="logo" onclick="window.location.href='index.html'">ShiroNEX</div>
+        <div class="footer-nav">
+            <a href="operating-system.html" class="footer-icon">
+                <div class="os-icon">OS</div>
+            </a>
+            <a href="pc-laptop.html" class="footer-icon">
+                <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                </svg>
+            </a>
+            <a href="music.html" class="footer-icon">
+                <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                    <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                </svg>
+            </a>
+            <a href="cloud-storage.html" class="footer-icon">
+                <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+                    <polyline points="12 13 12 17"></polyline>
+                    <polyline points="10 15 12 13 14 15"></polyline>
+                </svg>
+            </a>
+            <a href="hardware.html" class="footer-icon">
+                <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                    <rect x="9" y="9" width="6" height="6"></rect>
+                    <line x1="9" y1="1" x2="9" y2="4"></line>
+                    <line x1="15" y1="1" x2="15" y2="4"></line>
+                </svg>
+            </a>
+            <a href="game-engine.html" class="footer-icon">
+                <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 12h4m2 0h4"/>
+                    <circle cx="17" cy="11" r="1" fill="currentColor"/>
+                    <circle cx="19" cy="13" r="1" fill="currentColor"/>
+                    <path d="M2 8h20c0-2.21-1.79-4-4-4H6C3.79 4 2 5.79 2 8zm0 0v8c0 2.21 1.79 4 4 4h12c2.21 0 4-1.79 4-4V8"/>
+                </svg>
+            </a>
+        </div>
+        <div class="user-menu">
+            <div class="footer-icon">
+                <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </div>
+            <div class="menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

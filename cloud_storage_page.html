@@ -1,0 +1,573 @@
+<!-- cloud-storage.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Storage - ShiroNEX</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #001a33 0%, #003d5c 50%, #0066cc 100%);
+            z-index: -2;
+        }
+
+        .light-beam {
+            position: fixed;
+            top: -50%;
+            right: -10%;
+            width: 40%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 150, 255, 0.3), rgba(0, 200, 255, 0.5), transparent);
+            transform: rotate(25deg);
+            animation: shimmer 8s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.4; transform: rotate(25deg) translateX(0); }
+            50% { opacity: 0.7; transform: rotate(25deg) translateX(50px); }
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            font-style: italic;
+            letter-spacing: 2px;
+            cursor: pointer;
+        }
+
+        .back-btn {
+            padding: 10px 25px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(0, 150, 255, 0.6);
+            transform: translateX(-5px);
+        }
+
+        main {
+            min-height: calc(100vh - 80px);
+            padding: 40px 20px 100px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-title {
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(0, 150, 255, 0.5);
+        }
+
+        .page-subtitle {
+            font-size: 1.2em;
+            color: #aaa;
+        }
+
+        .storage-overview {
+            background: linear-gradient(135deg, rgba(0, 150, 255, 0.2), rgba(10, 40, 70, 0.4));
+            border-radius: 30px;
+            padding: 50px;
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 50px;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .storage-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-value {
+            font-size: 3em;
+            color: #00bfff;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #aaa;
+            font-size: 1.1em;
+        }
+
+        .storage-bar {
+            width: 100%;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            margin-top: 20px;
+        }
+
+        .storage-fill {
+            width: 65%;
+            height: 100%;
+            background: linear-gradient(90deg, #0066cc, #00bfff);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .plan-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 40px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s;
+            text-align: center;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(0, 150, 255, 0.5);
+            box-shadow: 0 15px 40px rgba(0, 150, 255, 0.3);
+        }
+
+        .plan-name {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #00bfff;
+        }
+
+        .plan-price {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .plan-period {
+            color: #999;
+            margin-bottom: 30px;
+        }
+
+        .plan-features {
+            list-style: none;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .plan-features li {
+            padding: 10px 0;
+            color: #ccc;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .plan-features li:before {
+            content: "✓ ";
+            color: #00bfff;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .plan-btn {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #0066cc, #00bfff);
+            border: none;
+            border-radius: 25px;
+            color: #fff;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .plan-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 150, 255, 0.4);
+        }
+
+        .files-section {
+            margin-top: 60px;
+        }
+
+        .section-title {
+            font-size: 2em;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .file-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .file-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .file-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(0, 150, 255, 0.5);
+            transform: translateX(10px);
+        }
+
+        .file-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #0066cc, #00bfff);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            font-size: 1.2em;
+            margin-bottom: 5px;
+        }
+
+        .file-meta {
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 20, 40, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-nav {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .footer-icon {
+            cursor: pointer;
+            transition: transform 0.3s;
+            filter: brightness(0.9);
+            text-decoration: none;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-icon:hover {
+            transform: translateY(-3px);
+            filter: brightness(1.2);
+        }
+
+        .os-icon {
+            width: 35px;
+            height: 35px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #003366;
+        }
+
+        .user-menu {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .menu-btn {
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .menu-btn span {
+            width: 30px;
+            height: 3px;
+            background: #fff;
+            border-radius: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2em;
+            }
+
+            .storage-overview {
+                padding: 30px;
+            }
+
+            .plans-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="light-beam"></div>
+
+    <main>
+        <a href="index.html" class="back-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to Home
+        </a>
+
+        <div class="page-header">
+            <h1 class="page-title">Cloud Storage</h1>
+            <p class="page-subtitle">Secure and accessible storage for all your files</p>
+        </div>
+
+        <div class="storage-overview">
+            <h2 style="text-align: center; margin-bottom: 40px; font-size: 2em;">Your Storage</h2>
+            <div class="storage-stats">
+                <div class="stat-card">
+                    <div class="stat-value">650</div>
+                    <div class="stat-label">GB Used</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">1TB</div>
+                    <div class="stat-label">Total Space</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">1,234</div>
+                    <div class="stat-label">Files</div>
+                </div>
+            </div>
+            <div class="storage-bar">
+                <div class="storage-fill">65% Used</div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Storage Plans</h2>
+
+        <div class="plans-grid">
+            <div class="plan-card">
+                <div class="plan-name">Basic</div>
+                <div class="plan-price">$0</div>
+                <div class="plan-period">Free Forever</div>
+                <ul class="plan-features">
+                    <li>100 GB Storage</li>
+                    <li>Basic File Sharing</li>
+                    <li>Mobile App Access</li>
+                    <li>Email Support</li>
+                </ul>
+                <button class="plan-btn">Current Plan</button>
+            </div>
+
+            <div class="plan-card">
+                <div class="plan-name">Pro</div>
+                <div class="plan-price">$9.99</div>
+                <div class="plan-period">per month</div>
+                <ul class="plan-features">
+                    <li>1 TB Storage</li>
+                    <li>Advanced Sharing</li>
+                    <li>Priority Support</li>
+                    <li>File Versioning</li>
+                    <li>Team Collaboration</li>
+                </ul>
+                <button class="plan-btn">Upgrade</button>
+            </div>
+
+            <div class="plan-card">
+                <div class="plan-name">Enterprise</div>
+                <div class="plan-price">$29.99</div>
+                <div class="plan-period">per month</div>
+                <ul class="plan-features">
+                    <li>Unlimited Storage</li>
+                    <li>Advanced Security</li>
+                    <li>24/7 Support</li>
+                    <li>Custom Branding</li>
+                    <li>Admin Controls</li>
+                    <li>API Access</li>
+                </ul>
+                <button class="plan-btn">Contact Sales</button>
+            </div>
+        </div>
+
+        <div class="files-section">
+            <h2 class="section-title">Recent Files</h2>
+            <div class="file-list">
+                <div class="file-item">
+                    <div class="file-icon">📄</div>
+                    <div class="file-info">
+                        <div class="file-name">Project_Proposal.pdf</div>
+                        <div class="file-meta">Modified 2 hours ago • 2.4 MB</div>
+                    </div>
+                </div>
+
+                <div class="file-item">
+                    <div class="file-icon">🖼️</div>
+                    <div class="file-info">
+                        <div class="file-name">Design_Assets.zip</div>
+                        <div class="file-meta">Modified yesterday • 156 MB</div>
+                    </div>
+                </div>
+
+                <div class="file-item">
+                    <div class="file-icon">📊</div>
+                    <div class="file-info">
+                        <div class="file-name">Q4_Report.xlsx</div>
+                        <div class="file-meta">Modified 3 days ago • 847 KB</div>
+                    </div>
+                </div>
+
+                <div class="file-item">
+                    <div class="file-icon">🎬</div>
+                    <div class="file-info">
+                        <div class="file-name">Presentation_Video.mp4</div>
+                        <div class="file-meta">Modified 5 days ago • 324 MB</div>
+                    </div>
+                </div>
+
+                <div class="file-item">
+                    <div class="file-icon">📝</div>
+                    <div class="file-info">
+                        <div class="file-name">Meeting_Notes.docx</div>
+                        <div class="file-meta">Modified 1 week ago • 124 KB</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="logo" onclick="window.location.href='index.html'">ShiroNEX</div>
+        <div class="footer-nav">
+            <a href="operating-system.html" class="footer-icon">
+                <div class="os-icon">OS</div>
+            </a>
+            <a href="pc-laptop.html" class="footer-icon">
+                <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                </svg>
+            </a>
+            <a href="music.html" class="footer-icon">
+                <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                    <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                </svg>
+            </a>
+            <a href="cloud-storage.html" class="footer-icon">
+                <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+                    <polyline points="12 13 12 17"></polyline>
+                    <polyline points="10 15 12 13 14 15"></polyline>
+                </svg>
+            </a>
+            <a href="hardware.html" class="footer-icon">
+                <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                    <rect x="9" y="9" width="6" height="6"></rect>
+                    <line x1="9" y1="1" x2="9" y2="4"></line>
+                    <line x1="15" y1="1" x2="15" y2="4"></line>
+                </svg>
+            </a>
+            <a href="game-engine.html" class="footer-icon">
+                <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 12h4m2 0h4"/>
+                    <circle cx="17" cy="11" r="1" fill="currentColor"/>
+                    <circle cx="19" cy="13" r="1" fill="currentColor"/>
+                    <path d="M2 8h20c0-2.21-1.79-4-4-4H6C3.79 4 2 5.79 2 8zm0 0v8c0 2.21 1.79 4 4 4h12c2.21 0 4-1.79 4-4V8"/>
+                </svg>
+            </a>
+        </div>
+        <div class="user-menu">
+            <div class="footer-icon">
+                <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </div>
+            <div class="menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

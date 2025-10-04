@@ -1,0 +1,429 @@
+<!-- pc-laptop.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC & Laptop - ShiroNEX</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #001a00 0%, #001a33 50%, #004d00 100%);
+            z-index: -2;
+        }
+
+        .light-beam {
+            position: fixed;
+            top: -50%;
+            right: -10%;
+            width: 40%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 100, 0.3), rgba(0, 255, 150, 0.5), transparent);
+            transform: rotate(25deg);
+            animation: shimmer 8s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.4; transform: rotate(25deg) translateX(0); }
+            50% { opacity: 0.7; transform: rotate(25deg) translateX(50px); }
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            font-style: italic;
+            letter-spacing: 2px;
+            cursor: pointer;
+        }
+
+        .back-btn {
+            padding: 10px 25px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(0, 255, 100, 0.6);
+            transform: translateX(-5px);
+        }
+
+        main {
+            min-height: calc(100vh - 80px);
+            padding: 40px 20px 100px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-title {
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(0, 255, 100, 0.5);
+        }
+
+        .page-subtitle {
+            font-size: 1.2em;
+            color: #aaa;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .product-card {
+            background: linear-gradient(135deg, rgba(0, 255, 100, 0.15), rgba(10, 40, 70, 0.4));
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(0, 255, 100, 0.5);
+            box-shadow: 0 15px 40px rgba(0, 255, 100, 0.3);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .product-name {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: #5fff8f;
+        }
+
+        .product-desc {
+            color: #ccc;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .product-price {
+            font-size: 1.8em;
+            color: #00ff66;
+            font-weight: bold;
+        }
+
+        .specs-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 50px;
+        }
+
+        .specs-title {
+            font-size: 2em;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .spec-item {
+            background: rgba(0, 255, 100, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #00ff66;
+        }
+
+        .spec-label {
+            color: #00ff66;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .spec-value {
+            color: #ddd;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 20, 40, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-nav {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .footer-icon {
+            cursor: pointer;
+            transition: transform 0.3s;
+            filter: brightness(0.9);
+            text-decoration: none;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-icon:hover {
+            transform: translateY(-3px);
+            filter: brightness(1.2);
+        }
+
+        .os-icon {
+            width: 35px;
+            height: 35px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #003366;
+        }
+
+        .user-menu {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .menu-btn {
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .menu-btn span {
+            width: 30px;
+            height: 3px;
+            background: #fff;
+            border-radius: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2em;
+            }
+
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="light-beam"></div>
+
+    <main>
+        <a href="index.html" class="back-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to Home
+        </a>
+
+        <div class="page-header">
+            <h1 class="page-title">PC & Laptop</h1>
+            <p class="page-subtitle">Discover powerful computing solutions for every need</p>
+        </div>
+
+        <div class="product-grid">
+            <div class="product-card">
+                <div class="product-image">💻</div>
+                <h3 class="product-name">Gaming Laptop Pro</h3>
+                <p class="product-desc">High-performance gaming laptop with RTX graphics and 240Hz display</p>
+                <div class="product-price">$1,899</div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">🖥️</div>
+                <h3 class="product-name">Workstation Desktop</h3>
+                <p class="product-desc">Professional workstation for content creation and 3D rendering</p>
+                <div class="product-price">$2,499</div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">📱</div>
+                <h3 class="product-name">Ultrabook Elite</h3>
+                <p class="product-desc">Ultra-portable laptop with all-day battery life and premium build</p>
+                <div class="product-price">$1,299</div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">⚡</div>
+                <h3 class="product-name">Gaming Desktop</h3>
+                <p class="product-desc">Custom gaming PC with liquid cooling and RGB lighting</p>
+                <div class="product-price">$3,299</div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">🎨</div>
+                <h3 class="product-name">Creator Laptop</h3>
+                <p class="product-desc">Perfect for designers with color-accurate 4K OLED display</p>
+                <div class="product-price">$1,799</div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">🏢</div>
+                <h3 class="product-name">Business Desktop</h3>
+                <p class="product-desc">Reliable desktop computer for office productivity</p>
+                <div class="product-price">$899</div>
+            </div>
+        </div>
+
+        <div class="specs-section">
+            <h2 class="specs-title">Standard Specifications</h2>
+            <div class="specs-grid">
+                <div class="spec-item">
+                    <div class="spec-label">Processor</div>
+                    <div class="spec-value">Intel Core i7 / AMD Ryzen 7</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Memory</div>
+                    <div class="spec-value">16GB - 32GB DDR5 RAM</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Storage</div>
+                    <div class="spec-value">512GB - 2TB NVMe SSD</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Graphics</div>
+                    <div class="spec-value">NVIDIA RTX 4060-4090</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Display</div>
+                    <div class="spec-value">15.6" - 27" FHD/4K</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Warranty</div>
+                    <div class="spec-value">3 Years Premium Support</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="logo" onclick="window.location.href='index.html'">ShiroNEX</div>
+        <div class="footer-nav">
+            <a href="operating-system.html" class="footer-icon">
+                <div class="os-icon">OS</div>
+            </a>
+            <a href="pc-laptop.html" class="footer-icon">
+                <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                </svg>
+            </a>
+            <a href="music.html" class="footer-icon">
+                <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                    <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                </svg>
+            </a>
+            <a href="cloud-storage.html" class="footer-icon">
+                <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+                    <polyline points="12 13 12 17"></polyline>
+                    <polyline points="10 15 12 13 14 15"></polyline>
+                </svg>
+            </a>
+            <a href="hardware.html" class="footer-icon">
+                <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                    <rect x="9" y="9" width="6" height="6"></rect>
+                    <line x1="9" y1="1" x2="9" y2="4"></line>
+                    <line x1="15" y1="1" x2="15" y2="4"></line>
+                </svg>
+            </a>
+            <a href="game-engine.html" class="footer-icon">
+                <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 12h4m2 0h4"/>
+                    <circle cx="17" cy="11" r="1" fill="currentColor"/>
+                    <circle cx="19" cy="13" r="1" fill="currentColor"/>
+                    <path d="M2 8h20c0-2.21-1.79-4-4-4H6C3.79 4 2 5.79 2 8zm0 0v8c0 2.21 1.79 4 4 4h12c2.21 0 4-1.79 4-4V8"/>
+                </svg>
+            </a>
+        </div>
+        <div class="user-menu">
+            <div class="footer-icon">
+                <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </div>
+            <div class="menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
